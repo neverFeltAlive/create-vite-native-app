@@ -1,6 +1,5 @@
 node_modules
 *.local
-
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -10,3 +9,10 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+
+.gitignore
+.npmignore
+
+.prettierrc.json
+.editorconfig
+.eslintrc.json
