@@ -84,23 +84,32 @@ async function indexPagePrompt() {
  */
 async function projectNamePrompt() {
   const cwd = basename(process.cwd());
-  const result = await prompts([
-    {
-      type: 'text',
-      name: 'projectName',
-      message: 'What is the name of your project? (Current directory will be used by default)',
-      initial: cwd,
-    },
-    {
-      type: 'confirm',
-      name: 'isConfirmed',
-      message: (prev) => prev === cwd ? 'To use the current directory make sure that it is empty. Continue?' : `Please confirm the name of the project: ${prev}`,
-      initial: true,
-    },
-  ]);
+  const defaultValue = '.';
 
-  !result?.isConfirmed && console.log('Current directory will be used');
-  result.projectName = result.projectName === cwd || !result?.isConfirmed ? '.' : result.projectName;
+  const result = await prompts(
+    [
+      {
+        type: 'text',
+        name: 'projectName',
+        message: 'What is the name of your project? (Current directory will be used by default)',
+        initial: defaultValue,
+      },
+      {
+        type: 'confirm',
+        name: 'isConfirmed',
+        message: (prev) => prev === defaultValue ? 'To use the current directory make sure that it is empty. Continue?' : `Please confirm the name of the project: ${prev}`,
+        initial: true,
+      },
+    ],
+    {
+      onCancel: () => process.exit(-1),
+    },
+  );
+
+  if ((result.projectName === defaultValue && !result?.isConfirmed) || !result?.isConfirmed) {
+    return await projectNamePrompt();
+  }
+
   return result;
 }
 
