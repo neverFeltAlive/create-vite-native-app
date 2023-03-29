@@ -1,0 +1,27 @@
+{
+  "name": "create-vite-native-app",
+  "version": "2.0.0",
+  "description": "Utility which configures vite for MPA native javascript projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "create-vite-native-app": "./bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neverFeltAlive/create-vite-native-app.git"
+  },
+  "keywords": [
+    "vite",
+    "js",
+    "pug"
+  ],
+  "author": "neverfeltalive",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neverFeltAlive/create-vite-native-app/issues"
+  },
+  "homepage": "https://github.com/neverFeltAlive/create-vite-native-app#readme"
+}
