@@ -30,7 +30,7 @@ const options = program.opts();
     options.indexPage = userPrompt.index;
   }
 
-  const gitCheckoutCommand = `git clone --depth 1 https://github.com/neverFeltAlive/vite-pug.git ${repoName}`;
+  const gitCheckoutCommand = `git clone --depth 1 https://github.com/neverFeltAlive/vite-pug.git ${repoName} && rm -rf .git`;
   const installDepsCommand = `cd ${repoName} && npm install`;
 
   // Create project

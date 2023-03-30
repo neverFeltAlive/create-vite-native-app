@@ -11,7 +11,6 @@
   "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "semi": "warn",
-    "no-console": "error",
     "no-debugger": "error",
     "camelcase": "warn",
     "no-var": "error"
