@@ -1,6 +1,7 @@
 {
   "name": "create-vite-native-app",
-  "version": "2.2.6",
+  "version": "2.2.7",
+  "type": "module",
   "description": "Utility which configures vite for MPA native javascript projects",
   "main": "index.js",
   "scripts": {
@@ -26,6 +27,7 @@
   "homepage": "https://github.com/neverFeltAlive/create-vite-native-app#readme",
   "dependencies": {
     "commander": "^10.0.0",
+    "nodejs-logger-n": "^1.0.3",
     "prompts": "^2.4.2"
   },
   "files": [

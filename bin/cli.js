@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { program } = require('commander');
-const { createProject } = require('./createProject');
-const { createComponent } = require('./createElement');
+import { program } from 'commander';
+import { createElement } from './createElement.js';
+import { createProject } from './createProject.js';
 
 // Configure Commander options
 program
@@ -15,6 +15,7 @@ program.parse(process.argv);
 const options = program.opts();
 
 (async () => {
+  console.clear();
   let commandArg = program.args[0];
 
   if (options.P || options.C) {
@@ -25,7 +26,7 @@ const options = program.opts();
     }
 
     try {
-      await createComponent(commandArg, options);
+      await createElement(commandArg, options);
     } catch (e) {
       console.error(e);
     }

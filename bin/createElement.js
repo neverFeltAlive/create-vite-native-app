@@ -1,6 +1,7 @@
-const { readFileSync, writeFile, existsSync, mkdirSync, readdirSync } = require('fs');
-const { join, resolve } = require('path');
-const { elementPrompts, wrongArchitecturePrompt, elementNamePrompts } = require('./customPrompts');
+import { readFileSync, writeFile, existsSync, mkdirSync, readdirSync } from 'fs';
+import { join, resolve } from 'path';
+import { elementPrompts, wrongArchitecturePrompt, elementNamePrompts } from './customPrompts.js';
+import { logError, logSuccess, logWarning } from 'nodejs-logger-n';
 
 /**
  * Created all necessary files for a component / page in an existing project
@@ -8,7 +9,7 @@ const { elementPrompts, wrongArchitecturePrompt, elementNamePrompts } = require(
  * @param options
  * @return {Promise<void>}
  */
-async function createElement(commandArg, options){
+export async function createElement(commandArg, options){
   const cwd = process.cwd();
   const projectRoot = findRoot(cwd);
   const targetPath = resolve(projectRoot, 'src', options.P ? 'pages' : 'components');
@@ -27,14 +28,15 @@ async function createElement(commandArg, options){
 
   // Check if directory exists
   if (existsSync(dirName)){
-    console.error(`Failed to create ${!options.P ? 'component' : 'page'} ${parsedName}. Directory already exists`);
+    logError(`Failed to create ${!options.P ? 'component' : 'page'}: ${parsedName}. Directory already exists`);
+    process.exit(-1);
   }
 
   // Create new directory
   try {
     mkdirSync(dirName);
   } catch (e) {
-    console.error(`Failed to create ${!options.P ? 'component' : 'page'} ${parsedName}`);
+    logError(`Failed to create ${!options.P ? 'component' : 'page'}: ${parsedName}`);
     console.error(e);
     process.exit(-1);
   }
@@ -44,13 +46,13 @@ async function createElement(commandArg, options){
 
   // Create pug file
   writeFile(join(dirName, 'index.pug'), getPugContent(parsedName, options.P), (error) => {
-    error && console.error(`Failed to create PUG file: ${error}`);
+    error && logWarning(`Failed to create PUG file: ${error}`);
   })
 
   // Create optional files
   if (elementOptions.componentOptions.includes('style')){
     writeFile(join(dirName, `style.${elementOptions.styleType}`), ``, (error) => {
-      error && console.error(`Failed to create ${elementOptions.styleType.toUpperCase()} file: ${error}`);
+      error && logWarning(`Failed to create ${elementOptions.styleType.toUpperCase()} file: ${error}`);
 
       // Link styles
       addComponentStyles(parsedName, projectRoot, elementOptions.styleType, options.P);
@@ -58,13 +60,13 @@ async function createElement(commandArg, options){
   }
   if (elementOptions.componentOptions.includes('js')){
     writeFile(join(dirName, `index.js`), ``, (error) => {
-      error && console.error(`Failed to create JS file: ${error}`);
+      error && logWarning(`Failed to create JS file: ${error}`);
 
       // Link js
       addComponentJS(parsedName, projectRoot, options.P);
     })
   }
-  console.log(`Successfully created ${parsedName} ${!options.P ? 'component' : 'page'}.`)
+  logSuccess(`Successfully created ${parsedName} ${!options.P ? 'component' : 'page'}.`)
 }
 
 /**
@@ -123,13 +125,13 @@ function addComponentStyles(name, root, styleType, isPage = false){
       const styleContents = readFileSync(resolve(stylePath, 'main.scss'), 'utf8')
       const newStyleContents = styleContents + generateStyleLink(name, styleType, isPage);
       writeFile(resolve(stylePath, 'main.scss'), newStyleContents, (error) => {
-        error && console.error(error);
+        error && logWarning(error);
       })
     } else {
-      console.error(`Failed to link styles for your ${isPage ? 'page' : 'component'}: No style file was found`)
+      logWarning(`Failed to link styles for your ${isPage ? 'page' : 'component'}: No style file was found`)
     }
   } catch (e) {
-    console.error(`Failed to link styles for your ${isPage ? 'page' : 'component'}`);
+    logWarning(`Failed to link styles for your ${isPage ? 'page' : 'component'}`);
   }
 }
 
@@ -148,13 +150,13 @@ function addComponentJS(name, root, isPage = false){
       const newContents = readFileSync(resolve(jsPath, 'main.js'), 'utf8')
       const newJSContents = newContents + generateJSLink(name, isPage);
       writeFile(resolve(jsPath, 'main.js'), newJSContents, (error) => {
-        error && console.error(error);
+        error && logWarning(error);
       })
     } else {
-      console.error(`Failed to link js for your ${isPage ? 'page' : 'component'}: No js file was found`)
+      logWarning(`Failed to link js for your ${isPage ? 'page' : 'component'}: No js file was found`)
     }
   } catch (e) {
-    console.error(`Failed to link js for your ${isPage ? 'page' : 'component'}`);
+    logWarning(`Failed to link js for your ${isPage ? 'page' : 'component'}`);
   }
 }
 
@@ -166,7 +168,7 @@ function addComponentJS(name, root, isPage = false){
  * @return {string}
  */
 function generateStyleLink(name, styleType, isPage = false) {
-  return `\n@import '../${isPage ? 'pages' : 'components'}/${name}/style.${styleType}';\n`;
+  return `@import '../${isPage ? 'pages' : 'components'}/${name}/style.${styleType}';\n`;
 }
 
 /**
@@ -176,9 +178,5 @@ function generateStyleLink(name, styleType, isPage = false) {
  * @return {string}
  */
 function generateJSLink(name, isPage = false){
-  return `\nimport * from '@${isPage ? 'pages' : 'components'}/${name}/index.js';\n`
+  return `import * as ${name} from '@${isPage ? 'pages' : 'components'}/${name}/index.js';\n`
 }
-
-
-module.exports.createComponent = createElement;
-

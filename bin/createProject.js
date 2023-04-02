@@ -1,7 +1,7 @@
-const { basename, join, resolve } = require('path');
-const { execSync } = require('child_process');
-const { unlinkSync, writeFile } = require('fs');
-const { projectNamePrompt, indexPagePrompt } = require('./customPrompts');
+import { basename, join, resolve } from 'path';
+import { execSync } from 'child_process';
+import { unlinkSync, writeFile } from 'fs';
+import { projectNamePrompt, indexPagePrompt } from './customPrompts.js';
 
 /**
  * Creates a new project
@@ -9,7 +9,7 @@ const { projectNamePrompt, indexPagePrompt } = require('./customPrompts');
  * @param options
  * @return {Promise<void>}
  */
-async function createProject(commandArg, options) {
+export async function createProject(commandArg, options) {
   // If project name is not specified
   if (commandArg === undefined) {
     let userPrompt = await projectNamePrompt();
@@ -45,7 +45,7 @@ async function createProject(commandArg, options) {
  * @param command
  * @return {boolean}
  */
-function runCommand(command) {
+export function runCommand(command) {
   try {
     execSync(`${command}`, { stdio: 'inherit' });
   } catch (e) {
@@ -78,5 +78,3 @@ function configurePages(enableIndexPage, dir) {
     process.exit(-1);
   });
 }
-
-module.exports.createProject = createProject;

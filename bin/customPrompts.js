@@ -1,10 +1,10 @@
-const prompts = require('prompts');
+import prompts from 'prompts'
 
 /**
  * Prompts user with index page options
  * @return {Promise<*>}
  */
-async function projectNamePrompt() {
+export async function projectNamePrompt() {
   const defaultValue = '.';
 
   const result = await prompts(
@@ -38,7 +38,7 @@ async function projectNamePrompt() {
  * Prompts user with index page options
  * @return {Promise<*>}
  */
-async function indexPagePrompt() {
+export async function indexPagePrompt() {
   return await prompts({
     type: 'toggle',
     name: 'index',
@@ -53,7 +53,7 @@ async function indexPagePrompt() {
  * Prompts user with wrong architecture warning
  * @return {Promise<*>}
  */
-async function wrongArchitecturePrompt() {
+export async function wrongArchitecturePrompt() {
   return await prompts(
     [
       {
@@ -71,7 +71,7 @@ async function wrongArchitecturePrompt() {
  * @param isPage - true if the element is a page
  * @return {Promise<*>}
  */
-async function elementPrompts(isPage = false){
+export async function elementPrompts(isPage = false){
   const options = await prompts(
     [
       {
@@ -100,18 +100,19 @@ async function elementPrompts(isPage = false){
         message: 'Which styles do you want to use?',
         choices: [
           {
-            title: 'CSS',
-            value: 'css'
-          },
-          {
             title: 'SCSS',
             value: 'scss',
           },
           {
             title: 'SASS',
             value: 'sass'
+          },
+          {
+            title: 'CSS',
+            value: 'css'
           }
-        ]
+        ],
+        initial: 0,
       }
     ]);
     options.styleType = styleType.styleType;
@@ -125,7 +126,7 @@ async function elementPrompts(isPage = false){
  * @param options
  * @return {Promise<*|{}>}
  */
-async function elementNamePrompts(options){
+export async function elementNamePrompts(options){
   return await prompts(
     [
       {
@@ -137,8 +138,3 @@ async function elementNamePrompts(options){
     ]
   )
 }
-module.exports.projectNamePrompt = projectNamePrompt;
-module.exports.indexPagePrompt = indexPagePrompt;
-module.exports.wrongArchitecturePrompt = wrongArchitecturePrompt;
-module.exports.elementPrompts = elementPrompts;
-module.exports.elementNamePrompts = elementNamePrompts;
