@@ -120,16 +120,16 @@ function addComponentStyles(name, root, styleType, isPage = false){
 
     const templateDir = readdirSync(stylePath);
     if (templateDir.includes('main.scss')){
-      const styleContents = readFileSync(resolve(stylePath, 'style.scss'), 'utf8')
+      const styleContents = readFileSync(resolve(stylePath, 'main.scss'), 'utf8')
       const newStyleContents = styleContents + generateStyleLink(name, styleType, isPage);
       writeFile(resolve(stylePath, 'main.scss'), newStyleContents, (error) => {
         error && console.error(error);
       })
     } else {
-      console.error(`Failed to link styles for your component: No style file was found`)
+      console.error(`Failed to link styles for your ${isPage ? 'page' : 'component'}: No style file was found`)
     }
   } catch (e) {
-    console.error(`Failed to link styles for your component`);
+    console.error(`Failed to link styles for your ${isPage ? 'page' : 'component'}`);
   }
 }
 
@@ -145,16 +145,16 @@ function addComponentJS(name, root, isPage = false){
 
     const templateDir = readdirSync(jsPath);
     if (templateDir.includes('main.js')){
-      const newContents = readFileSync(resolve(jsPath, 'style.scss'), 'utf8')
+      const newContents = readFileSync(resolve(jsPath, 'main.js'), 'utf8')
       const newJSContents = newContents + generateJSLink(name, isPage);
       writeFile(resolve(jsPath, 'main.js'), newJSContents, (error) => {
         error && console.error(error);
       })
     } else {
-      console.error(`Failed to link js for your component: No js file was found`)
+      console.error(`Failed to link js for your ${isPage ? 'page' : 'component'}: No js file was found`)
     }
   } catch (e) {
-    console.error(`Failed to link js for your component`);
+    console.error(`Failed to link js for your ${isPage ? 'page' : 'component'}`);
   }
 }
 
