@@ -1,6 +1,6 @@
 {
   "name": "create-vite-native-app",
-  "version": "2.1.1",
+  "version": "2.2.6",
   "description": "Utility which configures vite for MPA native javascript projects",
   "main": "index.js",
   "scripts": {
