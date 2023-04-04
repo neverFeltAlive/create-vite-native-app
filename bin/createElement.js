@@ -178,5 +178,5 @@ function generateStyleLink(name, styleType, isPage = false) {
  * @return {string}
  */
 function generateJSLink(name, isPage = false){
-  return `import * as ${name} from '@${isPage ? 'pages' : 'components'}/${name}/index.js';\n`
+  return `import '@${isPage ? 'pages' : 'components'}/${name}/index.js';\n`
 }
