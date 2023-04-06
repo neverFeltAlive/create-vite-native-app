@@ -90,7 +90,7 @@ function findRoot (dir=__dirname) {
  * @return {string}
  */
 function generatePage(name){
-  return `extends ../../template.pug
+  return `extends ../../utils/template.pug
 \n
 block title
 \ttitle ${name}
